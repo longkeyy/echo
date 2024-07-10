@@ -88,7 +88,7 @@ func main() {
 		for s, strings := range c.Request.Header {
 			c.Writer.WriteString(fmt.Sprintf("%s: %v\n", s, strings))
 		}
-		c.Writer.WriteString(fmt.Sprintf("%s: %v\n", "Request.Host", c.Request.Host))
+		c.Writer.WriteString(fmt.Sprintf("%s: %v\n", "Host", c.Request.Host))
 		c.String(http.StatusOK, c.RemoteIP())
 	})
 
