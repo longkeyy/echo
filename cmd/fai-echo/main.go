@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -85,11 +86,13 @@ func main() {
 	})
 
 	r.Any("/", func(c *gin.Context) {
+		var buf bytes.Buffer
 		for s, strings := range c.Request.Header {
-			c.Writer.WriteString(fmt.Sprintf("%s: %v\n", s, strings))
+			buf.WriteString(fmt.Sprintf("%s: %v\n", s, strings))
 		}
-		c.Writer.WriteString(fmt.Sprintf("%s: %v\n", "Host", c.Request.Host))
-		c.String(http.StatusOK, c.RemoteIP())
+		buf.WriteString(fmt.Sprintf("%s: %v\n", "Host", c.Request.Host))
+		buf.WriteString(c.RemoteIP())
+		c.String(http.StatusOK, buf.String())
 	})
 
 	r.GET("/ws", WebSocket)
