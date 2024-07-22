@@ -56,6 +56,19 @@ func WebSocket(c *gin.Context) {
 					log.Warnf("write message error:%v", err)
 				}
 			}
+		case messageType == websocket.BinaryMessage:
+			for s, w := range room {
+				err := w.WriteMessage(messageType, p)
+				if err != nil {
+					delete(room, s)
+					log.Warnf("write message error:%v", err)
+				}
+			}
+		case messageType == websocket.PingMessage:
+			err := conn.WriteMessage(websocket.PongMessage, []byte(""))
+			if err != nil {
+				log.Warnf("write pong message error:%v", err)
+			}
 		default:
 
 		}
