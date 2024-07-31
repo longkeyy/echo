@@ -110,6 +110,11 @@ func main() {
 		c.String(http.StatusOK, buf.String())
 	})
 
+	//204
+	r.GET("/generate_204", func(c *gin.Context) {
+		c.Status(http.StatusNoContent)
+	})
+
 	r.GET("/ws", WebSocket)
 
 	r.GET("/sse", func(c *gin.Context) {
